@@ -2,7 +2,8 @@
 import express, { json } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import { createToken } from './accestoke'
+import { createToken, TokenRouter } from './routes/accestoke'
+import { RoomRouter } from './routes/room'
 dotenv.config()
 
 
@@ -16,11 +17,7 @@ const SECRET_KEY = process.env.LIVEKIT_SECRET_KEY;
 const LIVEKIT_URL = process.env.LIVEKIT_URL;
 
 
-app.post('/getToken' ,async (req,res)=>{
-        const token = await createToken(req.body.roomname , req.body.identity)
-        res.json({
-                token
-        })
-})
+app.use('/token' ,TokenRouter)
+app.use('/rooms' , RoomRouter)
 
 app.listen(3000)
