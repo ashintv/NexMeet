@@ -2,7 +2,7 @@
 import express, { json } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import { createToken, TokenRouter } from './routes/accestoke'
+import { createToken, TokenRouter } from './routes/token'
 import { RoomRouter } from './routes/room'
 dotenv.config()
 
