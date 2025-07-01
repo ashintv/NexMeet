@@ -3,7 +3,7 @@ import { roomService } from "../config/livekit"
 export const ParticipantRouter = express.Router()
 
 
-
+//get all participants in a room
 ParticipantRouter.get("/:roomname", async (req, res) => {
 	const roomName = req.params.roomname
 	try {
@@ -17,6 +17,7 @@ ParticipantRouter.get("/:roomname", async (req, res) => {
 	}
 })
 
+//get a specific paticipant
 ParticipantRouter.get("/:roomname/:identity", async (req, res) => {
 	const roomName = req.params.roomname
 	const identity = req.params.identity
@@ -28,6 +29,7 @@ ParticipantRouter.get("/:roomname/:identity", async (req, res) => {
 	}
 })
 
+//update a participant
 ParticipantRouter.post("/:roomname/:identity", async (req, res) => {
         const roomName = req.params.roomname
 	const identity = req.params.identity
@@ -52,6 +54,7 @@ ParticipantRouter.post("/:roomname/:identity", async (req, res) => {
 	}
 })
 
+//remove / delete a particpant
 ParticipantRouter.delete("/:roomname/:identity", async (req, res) => {
 	const roomName = req.params.roomname
 	const identity = req.params.identity
