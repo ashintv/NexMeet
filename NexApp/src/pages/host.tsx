@@ -1,5 +1,3 @@
-'use client';
-
 import {
         ControlBar,
         GridLayout,
@@ -11,50 +9,36 @@ import {
 import { Room, Track } from 'livekit-client';
 import '@livekit/components-styles';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from "axios"
 
-export default function Page() {
-        // TODO: get user input for room and name
-        const [token ,  setToken] = useState('')
-        const [roomInstance] = useState(() => new Room({
-                // Optimize video quality for each participant's screen
+const serverUrl = 'wss://meet-fstakduf.livekit.cloud';
+export  function HMeeting() {
+        const [room] = useState(() => new Room({
                 adaptiveStream: true,
-                // Enable automatic audio/video quality optimization
                 dynacast: true,
         }));
-
+        // Connect to room
         useEffect(() => {
                 let mounted = true;
-                (async () => {
-                        try {
-                                if (!mounted) return;
+                const connect = async () => {
+                        if (mounted) {
                                 const response = await axios.post("http://localhost:3001/token/host", {
-                                        "identity": "second-user-nextjs",
+                                        "identity": "second-host-nextjs",
                                         "roomname": "room-nextjs"
                                 })
-                                //admin token
-                                setToken(response.data.token)
-                                await roomInstance.connect("wss://meet-fstakduf.livekit.cloud", response.data.token);
-                                console.log(response.data.token)
-
-                        } catch (e) {
-                                console.error(e);
+                                await room.connect(serverUrl, response.data.token);
                         }
-                })();
-
+                };
+                connect();
                 return () => {
                         mounted = false;
-                        roomInstance.disconnect();
+                        room.disconnect();
                 };
-        }, [roomInstance]);
-
-        if (token=="") {
-                return <div>Getting token...</div>;
-        }
+        }, [room]);
 
         return (
-                <RoomContext.Provider value={roomInstance}>
-                        <div data-lk-theme="default" style={{ height: '100dvh' }}>
+                <RoomContext.Provider value={room}>
+                        <div data-lk-theme="default" style={{ height: '100vh' }}>
                                 {/* Your custom component with basic video conferencing functionality. */}
                                 <MyVideoConference />
                                 {/* The RoomAudioRenderer takes care of room-wide audio for you. */}
