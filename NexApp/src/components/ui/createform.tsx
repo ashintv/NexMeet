@@ -33,6 +33,8 @@ export function CreateMeetingForm() {
 		resolver: zodResolver(FormSchema),
 		defaultValues:{
 			"public":'yes',
+			"pctPub":true,
+			"pctSub":true
 			
 		}
 	})
@@ -43,7 +45,7 @@ export function CreateMeetingForm() {
 	const { setVisible } = useCreateForm()
 
 	return (
-		<div className="w-full font-serif ">
+		<div className="w-full font-serif  ">
 			    <div className="flex justify-end">
                                  <Button onClick={()=>{
 					setVisible(false)
@@ -77,19 +79,19 @@ export function CreateMeetingForm() {
 										defaultValue={field.value}
 										className="flex">
 											
-										<Label  className="flex-col items-center w-1/2 rounded-md border border-primary p-5 space-x-2 data-[state=checked]:bg-amber-400">
+										<Label  htmlFor="option-one" className="flex-col items-center w-1/2 rounded-md border border-primary p-5 space-x-2 ">
 											<RadioGroupItem value="yes" id="option-one" />
-											<Label htmlFor="option-one">Public</Label>
+											Public
 											<FormDescription>Any one with join id can join your meeting </FormDescription>
 										</Label>
-										<Label className="flex-col items-center w-1/2 rounded-md border border-primary p-5 data-[state=checked]:bg-amber-400    space-x-2">
-											<RadioGroupItem value="no" id="option-one" />
-											<Label htmlFor="option-one">Private</Label>
+										<Label  htmlFor="option-two" className="flex-col items-center w-1/2 rounded-md border border-primary p-5  space-x-2">
+											<RadioGroupItem value="no" id="option-two" />
+											Private
 											<FormDescription>Password protected</FormDescription>
 										</Label>
 									</RadioGroup>
 								</FormControl>
-								<FormDescription>Select your meetings Type</FormDescription>
+								
 							</FormItem>
 						)}
 					/>
@@ -177,7 +179,7 @@ export function CreateMeetingForm() {
                                                 
 					</div>
 					<div className="flex justify-end">
-						 <Button type="submit" >Create & Join</Button>
+						 <Button type="submit" >Create and Join</Button>
 					</div>
 				</form>
 			</Form>
