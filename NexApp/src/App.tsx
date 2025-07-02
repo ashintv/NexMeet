@@ -6,6 +6,8 @@ import { Landing } from './pages/landing'
 import { HMeeting } from './pages/host'
 import { PMeeting } from './pages/participant'
 
+import { CreateRoom } from './pages/createroom'
+
 function App() {
   return (
     <BrowserRouter>
@@ -14,6 +16,7 @@ function App() {
         <Route path='/join' element={<Meetform />} />
         <Route path='/room/host' element={<HMeeting />} />
         <Route path='/room/participant' element={<PMeeting />} />
+        <Route path='/room/create' element={<CreateRoom />} />
 
 
 

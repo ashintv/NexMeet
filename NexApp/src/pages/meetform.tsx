@@ -1,9 +1,13 @@
 import { Topbar } from "@/components/ui/topbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { CreateRoom } from "./createroom";
+import { useCreateForm } from "@/store/useCreateForm";
 
 export function Meetform() {
+        const { visible , setVisible } = useCreateForm()
         return (<>
+                {visible && <CreateRoom/>}
                 <Topbar />
                 <div className="flex">
                         <div className="h-screen w-full p-15">
@@ -25,7 +29,9 @@ export function Meetform() {
                                                 </p>
                                         </div>
                                         <div className="py-5">
-                                                <Button className="w-full rounded-full" >New Meeting</Button>
+                                                <Button onClick={()=>{
+                                                        setVisible(true)
+                                                }} className="w-full rounded-full" >New Meeting</Button>
                                         </div>
 
                                         <div className="py-3">

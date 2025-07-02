@@ -3,7 +3,7 @@ import { ImageIcon } from "./imageIcon";
 
 export function Topbar() {
         return (
-                <div className="fixed top-0 h-12 w-full  border-b-2  border-primary   bg-transparent place-self-center flex">
+                <div className="fixed top-0 h-12 w-full  border-b-2  border-primary   bg-background place-self-center flex">
                         <div className="w-1/2 flex">
                                 <div className="text-primary flex items-center justify-center px-2">
                                        Logo Here
