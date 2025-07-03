@@ -22,9 +22,9 @@ export function PMeeting() {
                 let mounted = true;
                 const connect = async () => {
                         if (mounted) {
-                                const response = await axios.post("http://localhost:3001/token/host", {
-                                        "identity": "second-part-nextjs",
-                                        "roomname": "room-nextjs"
+                                const response = await axios.post("http://localhost:3001/token/participant", {
+                                        "identity": "second-part-1s",
+                                        "roomname": "room-test-1"
                                 })
                                 await room.connect(serverUrl, response.data.token);
                         }

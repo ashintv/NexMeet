@@ -10,20 +10,21 @@ import {
 	FormField,
 	FormItem,
 	FormLabel,
-	FormMessage,
+	
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Label } from "@radix-ui/react-label"
 import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useCreateForm } from "@/store/useCreateForm"
+import axios from "axios"
 
 
 
 const FormSchema = z.object({
 	Name: z.string().min(1, ""),
 	public: z.enum(["yes", "no"]), //pct == participant
-	password: z.string(),
+	password: z.string().min(1).optional(), // ask hk
 	pctSub: z.boolean(),
 	pctPub: z.boolean(),
 })
@@ -32,14 +33,28 @@ export function CreateMeetingForm() {
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues:{
+			"Name":"",
 			"public":'yes',
 			"pctPub":true,
-			"pctSub":true
+			"pctSub":true,
+	
 			
 		}
 	})
-	function onSubmit(values: z.infer<typeof FormSchema>) {
+	async function onSubmit(values: z.infer<typeof FormSchema>) {
 		console.log(values)
+		try{
+			const response = await axios.post('http://localhost:3001/rooms',{
+				roomname:values.Name,
+				pctPub:values.pctPub,
+				pctSub:values.pctSub
+
+			})
+			console.log(response.data)
+		}catch(e:any){
+			console.error(e)
+		}
+		
 	}
 	const isPublic = form.watch("public")
 	const { setVisible } = useCreateForm()
@@ -124,7 +139,7 @@ export function CreateMeetingForm() {
 									<FormControl>
 										<Label className="hover:bg-primary/10 flex items-start gap-3 rounded-lg border border-primary p-3 has-[[aria-checked=true]]:border-blue-600 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-transparent">
 											<Checkbox
-												id="toggle-2"
+												id="toggle-1"
 												checked={field.value}
 												onCheckedChange={field.onChange}
 												className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checke"

@@ -1,15 +1,24 @@
 import express from "express"
 import { roomService } from "../config/livekit"
-import { CreateOptions } from "livekit-server-sdk"
+import { CreateOptions, VideoGrant } from "livekit-server-sdk"
 
+export var  PvideoGrant: VideoGrant | null = null
 export const RoomRouter = express.Router()
 
 // create a room
 RoomRouter.post("/", async (req, res) => {
 	const opts:CreateOptions = {
-		name: req.body.roomname,
+		name: req.body.roomname, // should be randomly gernarted
 		emptyTimeout: 10 * 60, // 10 minutes
 		maxParticipants: 20,
+		metadata:req.body.roomname
+
+	}
+	PvideoGrant={
+		roomJoin: true,
+		room: req.body.roomname,
+		canSubscribe: req.body.pctSub,
+		canPublish: req.body.pctPub,
 	}
 	const room = await roomService.createRoom(opts)
 	res.json({
