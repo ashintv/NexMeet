@@ -32,7 +32,7 @@ AuthRouter.post("/signup", async (req, res) => {
 	}
 })
 
-AuthRouter.get("/signin", async (req, res) => {
+AuthRouter.post("/signin", async (req, res) => {
 	const Parse = UserSchema.safeParse(req.body)
 	if (!Parse.success) {
 		res.status(400).json({
