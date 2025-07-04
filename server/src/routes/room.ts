@@ -3,12 +3,13 @@ import express from "express"
 import { roomService } from "../config/livekit"
 import { CreateOptions, VideoGrant } from "livekit-server-sdk"
 import { RoomSchema } from "../types/room"
+import { authMiddlewares } from "../middlewares/auth"
 
 
 export const RoomRouter = express.Router()
 
 // create a room
-RoomRouter.post("/", async (req, res) => {
+RoomRouter.post("/",authMiddlewares, async (req, res) => {
 	const opts: CreateOptions = {
 		name: req.body.roomname, // should be randomly gernarted
 		emptyTimeout: 10 * 60, // 10 minutes
@@ -21,9 +22,13 @@ RoomRouter.post("/", async (req, res) => {
 			res.status(400).json({
 				err: "ivalid format",
 			})
+			return
 		}
+		//@ts-ignore
+		console.log(req.userId)
 		await GrantModel.create({
-			creatorID: req.body.creatorID,
+			//@ts-ignore
+			creatorID: req.userId,
 			roomJoin: true,
 			roomname: req.body.roomname,
 			Name: req.body.Roomname,
