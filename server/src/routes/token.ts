@@ -1,15 +1,17 @@
+
 import express from "express"
 import { createToken } from "../services/tokenService"
 import { TrackSource, VideoGrant } from "livekit-server-sdk"
-import { PvideoGrant } from "./room"
+import { GrantModel} from "../db"
+
 
 
 // token for particpants
 export const TokenRouter = express.Router()
 TokenRouter.post("/participant", async (req, res) => {
-	const roomName = req.body.roomname
-	const identity = req.body.identity
-	const grant = PvideoGrant
+	const grant = await GrantModel.findOne({
+		roomname:req.body.roomname
+	})
 	if(!grant){
 		res.status(400).json({
 			msg:"meeting not exists"
@@ -17,7 +19,14 @@ TokenRouter.post("/participant", async (req, res) => {
 		})
 		return
 	}
-	const token = await createToken(req.body.roomname, req.body.identity, grant)
+	const VideoGrant : VideoGrant = {
+		room:grant.roomname!,
+		roomJoin:grant.roomJoin!,
+		canPublish:grant.pctPub!,
+		canSubscribe:grant.pctSub!
+		
+	}
+ 	const token = await createToken(req.body.roomname, req.body.identity, VideoGrant)
 	res.json({
 		token,
 	})

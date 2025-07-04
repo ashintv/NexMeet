@@ -5,7 +5,7 @@ const UserSchema = new Schema({
 	password: { type: String, require: true },
 })
 
-const RoomSchema = new Schema({
+const GrantSchema = new Schema({
         creatorID:{type:mongoose.Types.ObjectId , ref:'user' , required:true},
 	roomname: { type: String, require: true, unique: true },
 	roomJoin: { type: Boolean, require: true },
@@ -16,4 +16,4 @@ const RoomSchema = new Schema({
 
 
 export const UserModel = model("user", UserSchema)
-export const RoomModel =  model('room' , RoomSchema)
+export const GrantModel =  model('room' , GrantSchema)

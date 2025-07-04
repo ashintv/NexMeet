@@ -1,10 +1,10 @@
-import { RoomModel } from "./../db"
+import { GrantModel } from "./../db"
 import express from "express"
 import { roomService } from "../config/livekit"
 import { CreateOptions, VideoGrant } from "livekit-server-sdk"
 import { RoomSchema } from "../types/room"
 
-export var PvideoGrant: VideoGrant | null = null
+
 export const RoomRouter = express.Router()
 
 // create a room
@@ -15,13 +15,6 @@ RoomRouter.post("/", async (req, res) => {
 		maxParticipants: 20,
 		metadata: req.body.roomname,
 	}
-	// PvideoGrant={
-	// 	roomJoin: true,
-	// 	room: req.body.roomname,
-	// 	canSubscribe: req.body.pctSub,
-	// 	canPublish: req.body.pctPub,
-	// }
-
 	try {
 		const Parse = RoomSchema.safeParse(req.body)
 		if (Parse.error) {
@@ -29,7 +22,7 @@ RoomRouter.post("/", async (req, res) => {
 				err: "ivalid format",
 			})
 		}
-		await RoomModel.create({
+		await GrantModel.create({
 			creatorID: req.body.creatorID,
 			roomJoin: true,
 			roomname: req.body.roomname,
