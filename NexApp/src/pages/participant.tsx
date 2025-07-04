@@ -47,7 +47,7 @@ export function PMeeting() {
                                 <ControlBar  className='' />
                         </div>
                 </RoomContext.Provider>
-        );
+        ); 
 }
 
 function MyVideoConference() {
