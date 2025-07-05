@@ -8,25 +8,27 @@ import axios from "axios"
 import { ButtonLoader } from "./ui/buttonloader"
 import { useNavigate } from "react-router-dom"
 
-export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
+export function SignupForm({ className, ...props }: React.ComponentProps<"form">) {
 	const [loading, setLoading] = useState(false)
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
+	const [name, setName] = useState("")
 	const [error, setError] = useState("")
-  const navigate  =useNavigate()
+	const [cpassword, setCpassword] = useState("")
+	const navigate = useNavigate()
+	const [disableSubmit, setDisableSubmit] = useState(true)
+	const [passmatchError, setPassmatchError] = useState(false)
 	const handleSubmit = async () => {
 		setError("")
 		setLoading(true)
 		console.log(email, password)
 		try {
-			const response = await axios.post("http://localhost:3001/signin", {
+			await axios.post("http://localhost:3001/signup", {
 				email,
 				password,
+				Name: name,
 			})
-      localStorage.setItem('token' , response.data.token)
-      navigate('/join')
-
-    
+			
 		} catch (err: any) {
 			if (err.response && err.response.data && err.response.data.err) {
 				setError(err.response.data.err)
@@ -40,9 +42,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 	return (
 		<form className={cn("flex flex-col gap-6", className)} {...props}>
 			<div className="flex flex-col items-center gap-2 text-center">
-				<h1 className="text-2xl font-bold">Login to your account</h1>
+				<h1 className="text-2xl font-bold">Create account</h1>
 				<p className="text-muted-foreground text-sm text-balance">
-					Enter your email below to login to your account
+					Enter your email below to create your account
 				</p>
 			</div>
 			<div className="grid gap-6">
@@ -62,11 +64,23 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 					/>
 				</div>
 				<div className="grid gap-3">
+					<p className="text-red-500">{error}</p>
+					<Label htmlFor="email">Name</Label>
+
+					<Input
+						id="Name"
+						type="text"
+						placeholder="Name"
+						required
+						value={name}
+						onChange={(e) => {
+							setName(e.target.value)
+						}}
+					/>
+				</div>
+				<div className="grid gap-3">
 					<div className="flex items-center">
 						<Label htmlFor="password">Password</Label>
-						<a href="#" className="ml-auto text-sm underline-offset-4 hover:underline">
-							Forgot your password?
-						</a>
 					</div>
 					<Input
 						id="password"
@@ -74,12 +88,37 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 						required
 						value={password}
 						onChange={(e) => {
-							setPassword(e.target.value)
+							const value = e.target.value
+							setPassword(value)
+							setPassmatchError(value !== password);
+							
 						}}
 					/>
 				</div>
-				<Button type="submit" className={`w-full `} onClick={handleSubmit} disabled={loading}>
-					{loading ?<ButtonLoader />: "Sign in"}
+				<div className="grid gap-3">
+					<div className="flex items-center">
+						<Label htmlFor="password">Confirm password</Label>
+					</div>
+					{passmatchError && <div className="text-red-500">Password do not match</div>}
+					<Input
+						id="confirmpassword"
+						type="password"
+						required
+						value={cpassword}
+						onChange={(e) => {
+							const value = e.target.value
+							setCpassword(value)
+							setPassmatchError(value !== password);
+							setDisableSubmit(false)
+						}}
+					/>
+				</div>
+				<Button 
+					type="submit"
+					className={`w-full `}
+					onClick={handleSubmit}
+					disabled={disableSubmit}>
+					{loading ? <ButtonLoader /> : "Sign in"}
 				</Button>
 				<div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
 					<span className="bg-background text-muted-foreground relative z-10 px-2">
@@ -99,9 +138,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 			<div className="text-center text-sm">
 				Don&apos;t have an account?{" "}
 				<a onClick={()=>{
-          navigate('/signup')
-        }} className="underline underline-offset-4 hover:cursor-pointer">
-					Sign up
+					navigate('/login')
+				}} className="underline underline-offset-4 hover:cursor-pointer">
+					Sign in
 				</a>
 			</div>
 		</form>

@@ -1,7 +1,7 @@
 import { LoginForm } from "@/components/login-form"
 
 
-export function Auth() {
+export function Login() {
 	return (
 		<div className="bg-background w-screen h-screen flex">
 			<div className="p-10 h-full w-1/2  flex items-center justify-center">
@@ -13,7 +13,7 @@ export function Auth() {
 				<div className="flex h-full w-full items-center bg-secondary rounded-l-full p-20  pr-0 shadow-2xl shadow-primary">
 					<div className="flex shadow-2xl shadow-primary h-full w-full items-center bg-background rounded-l-full p-15 pr-0">
 						<div className="flex shadow-2xl shadow-primary h-full w-full items-center bg-primary/10 p-15 rounded-l-full bg-blend-screen">
-							<div className="fixed right-0  text-[130px] p-5 text-primary font-extrabold text-shadow-2xl text-shadow-primary font-stretch-160%  text-shadow-lg text-outline ">
+							<div className="fixed right-0  text-[120px] p-5 text-primary font-extrabold text-shadow-2xl text-shadow-primary font-stretch-160%  text-shadow-lg text-outline ">
 								NexMeet
 							</div>
 						</div>

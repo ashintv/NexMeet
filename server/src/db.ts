@@ -1,12 +1,14 @@
 import mongoose, { model, Schema } from "mongoose"
 
 const UserSchema = new Schema({
-	username: { type: String, require: true, unique: true },
+        Name:{type:String , require:true},
+        Avatar:{type:String},
+	email: { type: String, require: true, unique: true },
 	password: { type: String, require: true },
 })
 
 const GrantSchema = new Schema({
-        creatorID:{type:mongoose.Types.ObjectId , ref:'user' , required:true},
+        creatorID:{type:mongoose.Types.ObjectId , ref:'email' , required:true},
 	roomname: { type: String, require: true, unique: true },
 	roomJoin: { type: Boolean, require: true },
 	Name: { type: String, require: true },

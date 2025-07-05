@@ -18,8 +18,9 @@ AuthRouter.post("/signup", async (req, res) => {
 	try {
 		const password = await bcrypt.hash(req.body.password, 5)
 		const user = await UserModel.create({
-			username: Parse.data.username,
-			password: password, 
+			email: Parse.data.email,
+			password: password,
+                        Name:Parse.data.Name 
 		})
 		res.json({
 			user,
@@ -42,12 +43,13 @@ AuthRouter.post("/signin", async (req, res) => {
 	}
 	try {
 		const user = await UserModel.findOne({
-			username: req.body.username,
+			email: req.body.email,
 		})
 		if (!user) {
 			res.status(400).json({
-				err: "user does not exist",
+				err: "email does not exist",
 			})
+                        console.error('invalide user')
 			return
 		}
                 //@ts-ignore
@@ -55,7 +57,7 @@ AuthRouter.post("/signin", async (req, res) => {
                 console.log(verify)
 		if (!verify) {
 			res.status(400).json({
-				err: "wrong password",
+				err: "incorrect password",
 			})
 			return
 		}
