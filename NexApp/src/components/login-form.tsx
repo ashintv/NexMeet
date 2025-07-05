@@ -12,6 +12,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 	const [loading, setLoading] = useState(false)
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
+  const [disableSubmit, setDisableSubmit] = useState(true)
 	const [error, setError] = useState("")
   const navigate  =useNavigate()
 	const handleSubmit = async () => {
@@ -75,10 +76,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 						value={password}
 						onChange={(e) => {
 							setPassword(e.target.value)
+              setDisableSubmit(false)
 						}}
 					/>
 				</div>
-				<Button type="submit" className={`w-full `} onClick={handleSubmit} disabled={loading}>
+				<Button type="submit" className={`w-full `} onClick={handleSubmit} disabled={disableSubmit}>
 					{loading ?<ButtonLoader />: "Sign in"}
 				</Button>
 				<div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">

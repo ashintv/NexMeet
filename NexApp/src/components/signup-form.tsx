@@ -91,6 +91,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"form">
 							const value = e.target.value
 							setPassword(value)
 							setPassmatchError(value !== password);
+							setDisableSubmit(value !== password)
 							
 						}}
 					/>
@@ -109,7 +110,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"form">
 							const value = e.target.value
 							setCpassword(value)
 							setPassmatchError(value !== password);
-							setDisableSubmit(false)
+							setDisableSubmit(value !== password)
 						}}
 					/>
 				</div>
