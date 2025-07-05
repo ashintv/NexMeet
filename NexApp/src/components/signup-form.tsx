@@ -18,7 +18,8 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"form">
 	const navigate = useNavigate()
 	const [disableSubmit, setDisableSubmit] = useState(true)
 	const [passmatchError, setPassmatchError] = useState(false)
-	const handleSubmit = async () => {
+	const handleSubmit = async (e:React.FormEvent) => {
+		e.preventDefault()
 		setError("")
 		setLoading(true)
 		console.log(email, password)
@@ -28,7 +29,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"form">
 				password,
 				Name: name,
 			})
-			
+			navigate("/login")
 		} catch (err: any) {
 			if (err.response && err.response.data && err.response.data.err) {
 				setError(err.response.data.err)
@@ -90,9 +91,8 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"form">
 						onChange={(e) => {
 							const value = e.target.value
 							setPassword(value)
-							setPassmatchError(value !== password);
-							setDisableSubmit(value !== password)
-							
+							setPassmatchError(value !== cpassword)
+							setDisableSubmit(value !== cpassword)
 						}}
 					/>
 				</div>
@@ -109,12 +109,12 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"form">
 						onChange={(e) => {
 							const value = e.target.value
 							setCpassword(value)
-							setPassmatchError(value !== password);
+							setPassmatchError(value !== password)
 							setDisableSubmit(value !== password)
 						}}
 					/>
 				</div>
-				<Button 
+				<Button
 					type="submit"
 					className={`w-full `}
 					onClick={handleSubmit}
@@ -138,9 +138,11 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"form">
 			</div>
 			<div className="text-center text-sm">
 				Don&apos;t have an account?{" "}
-				<a onClick={()=>{
-					navigate('/login')
-				}} className="underline underline-offset-4 hover:cursor-pointer">
+				<a
+					onClick={() => {
+						navigate("/login")
+					}}
+					className="underline underline-offset-4 hover:cursor-pointer">
 					Sign in
 				</a>
 			</div>

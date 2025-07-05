@@ -1,9 +1,12 @@
 import { LoginForm } from "@/components/login-form"
+import { Topbar } from "@/components/ui/topbar"
 
 
 export function Login() {
 	return (
+		
 		<div className="bg-background w-screen h-screen flex">
+			<Topbar/>
 			<div className="p-10 h-full w-1/2  flex items-center justify-center">
 				<div className=" w-full m-10 rounded-4xl">
 					<LoginForm className=" w-full h-1/2 p-5" />

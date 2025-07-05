@@ -4,6 +4,7 @@ import { UserSchema } from "../types/user"
 import { UserModel } from "../db"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import { email } from "zod/src/v4/core/regexes"
 export const AuthRouter = express.Router()
 
 AuthRouter.post("/signup", async (req, res) => {
@@ -68,7 +69,10 @@ AuthRouter.post("/signin", async (req, res) => {
 			process.env.JWT_SECRET!
 		)
                 res.json({
-                        token
+                        token,
+                        Name:user.Name,
+                        email:user.email
+
                 })
 	} catch (e) {
 		console.error(e)

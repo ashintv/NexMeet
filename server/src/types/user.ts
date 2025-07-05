@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 export const UserSchema  = z.object({
         Name:z.string().min(4 , 'username should have atleast four charecters')
-                .max(10 , "username should not exceed 10 charatecters").optional(),
+                .max(20, "username should not exceed 20 charatecters").optional(),
         email:z.string().email(),
         password:z.string()
 })

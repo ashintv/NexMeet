@@ -2,20 +2,23 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useState } from "react"
+import React, { useState } from "react"
 import axios from "axios"
 
 import { ButtonLoader } from "./ui/buttonloader"
 import { useNavigate } from "react-router-dom"
+import { useUserData } from "@/store/useUser"
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
 	const [loading, setLoading] = useState(false)
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
-  const [disableSubmit, setDisableSubmit] = useState(true)
+	const [disableSubmit, setDisableSubmit] = useState(true)
 	const [error, setError] = useState("")
-  const navigate  =useNavigate()
-	const handleSubmit = async () => {
+	const navigate = useNavigate()
+	const user = useUserData()
+	const handleSubmit = async (e:React.FormEvent) => {
+    e.preventDefault()
 		setError("")
 		setLoading(true)
 		console.log(email, password)
@@ -24,17 +27,22 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 				email,
 				password,
 			})
-      localStorage.setItem('token' , response.data.token)
-      navigate('/join')
+			localStorage.setItem("token", response.data.token)
 
-    
+			user.setUserData({
+				Name: response.data.Name,
+				email: response.data.email,
+			})
+			alert(`$$${response.data.Name}`)
+			navigate("/join")
+			setLoading(false)
 		} catch (err: any) {
 			if (err.response && err.response.data && err.response.data.err) {
 				setError(err.response.data.err)
 			} else {
 				setError("Something went wrong")
 			}
-		} finally {
+
 			setLoading(false)
 		}
 	}
@@ -76,12 +84,16 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 						value={password}
 						onChange={(e) => {
 							setPassword(e.target.value)
-              setDisableSubmit(false)
+							setDisableSubmit(false)
 						}}
 					/>
 				</div>
-				<Button type="submit" className={`w-full `} onClick={handleSubmit} disabled={disableSubmit}>
-					{loading ?<ButtonLoader />: "Sign in"}
+				<Button
+					type="submit"
+					className={`w-full `}
+					onClick={handleSubmit}
+					disabled={disableSubmit}>
+					{loading ? <ButtonLoader /> : "Sign in"}
 				</Button>
 				<div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
 					<span className="bg-background text-muted-foreground relative z-10 px-2">
@@ -100,9 +112,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 			</div>
 			<div className="text-center text-sm">
 				Don&apos;t have an account?{" "}
-				<a onClick={()=>{
-          navigate('/signup')
-        }} className="underline underline-offset-4 hover:cursor-pointer">
+				<a
+					onClick={() => {
+						navigate("/signup")
+					}}
+					className="underline underline-offset-4 hover:cursor-pointer">
 					Sign up
 				</a>
 			</div>
