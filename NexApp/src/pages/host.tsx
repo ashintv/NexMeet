@@ -12,9 +12,12 @@ import { useEffect, useState } from 'react';
 import axios from "axios"
 
 import { useParams } from 'react-router-dom';
+import { userStore } from '@/store/useuserdata';
+
 
 const serverUrl = 'wss://meet-fstakduf.livekit.cloud';
-export  function HMeeting() {
+export  function HMeeting(){
+        const { email } = userStore.getState().user
         const [room] = useState(() => new Room({
                 adaptiveStream: true,
                 dynacast: true,
@@ -25,8 +28,9 @@ export  function HMeeting() {
                 let mounted = true;
                 const connect = async () => {
                         if (mounted) {
+                                
                                 const response = await axios.post("http://localhost:3001/token/host", {
-                                        "identity":'ak_sree',
+                                        "identity":email,
                                         "roomname": joinid
                                 })
                                 await room.connect(serverUrl, response.data.token);

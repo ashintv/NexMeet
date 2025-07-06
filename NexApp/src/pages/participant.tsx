@@ -11,16 +11,19 @@ import '@livekit/components-styles';
 import { useEffect, useState } from 'react';
 import axios from "axios"
 import { useParams } from 'react-router';
+import { userStore, type userState } from '@/store/useuserdata';
+
 
 
 const serverUrl = 'wss://meet-fstakduf.livekit.cloud';
 export function PMeeting() {
+        const { email } = userStore.getState().user
         const [room] = useState(() => new Room({
                 adaptiveStream: true,
                 dynacast: true,
         }));
         let params = useParams()
-     
+        
         // Connect to room
         useEffect(() => {
         
@@ -29,7 +32,7 @@ export function PMeeting() {
                         if (mounted) {
                                
                                 const response = await axios.post("http://localhost:3001/token/participant", {
-                                        "identity": "ashi",
+                                        "identity": email,
                                         "roomname": params.joinid
                                 })
                                 await room.connect(serverUrl, response.data.token);
@@ -42,7 +45,9 @@ export function PMeeting() {
                 };
         }, [room]);
 
-        return (
+        return (<>
+    
+        
                 <RoomContext.Provider value={room}>
                         <div data-lk-theme="default" style={{ height: '100vh' }}>
                                 {/* Your custom component with basic video conferencing functionality. */}
@@ -53,6 +58,7 @@ export function PMeeting() {
                                 <ControlBar  className='' />
                         </div>
                 </RoomContext.Provider>
+                </>
         ); 
 }
 

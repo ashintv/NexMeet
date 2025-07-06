@@ -4,12 +4,13 @@ import { ImageIcon } from "./imageIcon";
 import { NexMeet } from "@/icons/nexmeet";
 import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
-import { useUserData } from "@/hooks/useUserdata";
+import { userStore } from "@/store/useuserdata";
+
 
 
 export function Topbar() {
-        const { name }  = useUserData()
         const navigate = useNavigate()
+        const {name  }= userStore.getState().user
         return (
                 <div className="fixed top-0 h-12 w-full  border-b-2  border-primary   bg-background place-self-center flex">
                         <div className="w-1/2 flex">

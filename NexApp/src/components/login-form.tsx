@@ -7,6 +7,7 @@ import axios from "axios"
 
 import { ButtonLoader } from "./ui/buttonloader"
 import { useNavigate } from "react-router-dom"
+import { userStore } from "@/store/useuserdata"
 
 
 
@@ -28,9 +29,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 				email,
 				password,
 			})
-			localStorage.setItem("token", response.data.token)
-      localStorage.setItem("email" ,  response.data.email)
-      localStorage.setItem("name" ,  response.data.Name)
+      userStore.getState().setUser({
+        name:response.data.Name,
+        email:response.data.email
+      })
+			
 			navigate("/join")
 			setLoading(false)
 		} catch (err: any) {
