@@ -19,6 +19,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useCreateForm } from "@/store/useCreateForm"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { BACKEND_URL } from "@/config"
 
 
 
@@ -49,7 +50,7 @@ export function CreateMeetingForm() {
 	async function onSubmit(values: z.infer<typeof FormSchema>) {
 		console.log(values)
 		try{
-			const response = await axios.post('http://localhost:3001/rooms',{
+			const response = await axios.post(BACKEND_URL+'/rooms',{
 				Name:values.Name,
 				pctPub:values.pctPub,
 				pctSub:values.pctSub,

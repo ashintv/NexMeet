@@ -13,6 +13,7 @@ import axios from "axios"
 
 import { useParams } from 'react-router-dom';
 import { userStore } from '@/store/useuserdata';
+import { BACKEND_URL } from '@/config';
 
 
 const serverUrl = 'wss://meet-fstakduf.livekit.cloud';
@@ -29,7 +30,7 @@ export  function HMeeting(){
                 const connect = async () => {
                         if (mounted) {
                                 
-                                const response = await axios.post("http://localhost:3001/token/host", {
+                                const response = await axios.post(BACKEND_URL+"/token/host", {
                                         "identity":email,
                                         "roomname": joinid
                                 })

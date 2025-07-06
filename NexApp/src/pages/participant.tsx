@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import axios from "axios"
 import { useParams } from 'react-router';
 import { userStore } from '@/store/useuserdata';
+import { BACKEND_URL } from '@/config';
 
 
 
@@ -31,7 +32,7 @@ export function PMeeting() {
                 const connect = async () => {
                         if (mounted) {
                                
-                                const response = await axios.post("http://localhost:3001/token/participant", {
+                                const response = await axios.post(BACKEND_URL+"/token/participant", {
                                         "identity": email,
                                         "roomname": params.joinid
                                 })

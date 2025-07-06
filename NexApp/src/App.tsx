@@ -2,7 +2,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 import { Meetform } from './pages/meetform'
-import { Landing } from './pages/landing'
+import LandingPage from './pages/landing'
 import { HMeeting } from './pages/host'
 import { PMeeting } from './pages/participant'
 
@@ -16,7 +16,7 @@ function App() {
     <BrowserRouter>
    
       <Routes>
-        <Route path='/' element={<Landing />} />
+        <Route path='/' element={<LandingPage />} />
         <Route path='/login' element={<Login />} />
          <Route path='/signup' element={<Signup/>} />
         <Route path='/join' element={<Meetform />} />

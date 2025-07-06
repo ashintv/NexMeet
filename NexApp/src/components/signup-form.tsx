@@ -7,6 +7,7 @@ import axios from "axios"
 
 import { ButtonLoader } from "./ui/buttonloader"
 import { useNavigate } from "react-router-dom"
+import { BACKEND_URL } from "@/config"
 
 export function SignupForm({ className, ...props }: React.ComponentProps<"form">) {
 	const [loading, setLoading] = useState(false)
@@ -24,7 +25,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"form">
 		setLoading(true)
 		console.log(email, password)
 		try {
-			await axios.post("http://localhost:3001/signup", {
+			await axios.post(BACKEND_URL+"/signup", {
 				email,
 				password,
 				Name: name,

@@ -8,6 +8,7 @@ import axios from "axios"
 import { ButtonLoader } from "./ui/buttonloader"
 import { useNavigate } from "react-router-dom"
 import { userStore } from "@/store/useuserdata"
+import { BACKEND_URL } from "@/config"
 
 
 
@@ -25,7 +26,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 		setLoading(true)
 		console.log(email, password)
 		try {
-			const response = await axios.post("http://localhost:3001/signin", {
+			const response = await axios.post(BACKEND_URL+"/signin", {
 				email,
 				password,
 			})
