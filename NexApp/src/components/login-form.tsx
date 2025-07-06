@@ -7,7 +7,8 @@ import axios from "axios"
 
 import { ButtonLoader } from "./ui/buttonloader"
 import { useNavigate } from "react-router-dom"
-import { useUserData } from "@/store/useUser"
+
+
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
 	const [loading, setLoading] = useState(false)
@@ -16,9 +17,9 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 	const [disableSubmit, setDisableSubmit] = useState(true)
 	const [error, setError] = useState("")
 	const navigate = useNavigate()
-	const user = useUserData()
-	const handleSubmit = async (e:React.FormEvent) => {
-    e.preventDefault()
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault()
 		setError("")
 		setLoading(true)
 		console.log(email, password)
@@ -28,12 +29,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
 				password,
 			})
 			localStorage.setItem("token", response.data.token)
-
-			user.setUserData({
-				Name: response.data.Name,
-				email: response.data.email,
-			})
-			alert(`$$${response.data.Name}`)
+      localStorage.setItem("email" ,  response.data.email)
+      localStorage.setItem("name" ,  response.data.Name)
 			navigate("/join")
 			setLoading(false)
 		} catch (err: any) {

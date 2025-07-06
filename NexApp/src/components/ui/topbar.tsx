@@ -1,12 +1,14 @@
 
-import { useUserData } from "@/store/useUser";
+
 import { ImageIcon } from "./imageIcon";
 import { NexMeet } from "@/icons/nexmeet";
 import { Button } from "./button";
 import { useNavigate } from "react-router-dom";
+import { useUserData } from "@/hooks/useUserdata";
+
 
 export function Topbar() {
-        const {Name} = useUserData()
+        const { name }  = useUserData()
         const navigate = useNavigate()
         return (
                 <div className="fixed top-0 h-12 w-full  border-b-2  border-primary   bg-background place-self-center flex">
@@ -18,11 +20,11 @@ export function Topbar() {
                         </div>
                         <div className="flex w-1/2 px-3 justify-end ">
                                 <div className="text-primary flex items-center justify-center px-2">
-                                       {Name?Name:<Button onClick={()=>{
+                                       {name?name:<Button onClick={()=>{
                                         navigate('/login')
                                        }} variant={"secondary"} className="rounded-full m-2 text-md px-5">Signin</Button>}
                                 </div>
-                                {Name && <ImageIcon />}
+                                {name && <ImageIcon />}
                         </div>
                 </div>
         )
