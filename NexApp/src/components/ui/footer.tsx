@@ -1,4 +1,4 @@
-import { Github, Twitter, Mail, Globe } from "lucide-react"
+import { Github, Twitter, Mail, Globe, GithubIcon } from "lucide-react"
 
 export function Footer() {
 	return (
@@ -14,8 +14,7 @@ export function Footer() {
 
 				{/* Right side: Links */}
 				<div className="flex gap-4">
-					<FooterIcon href="https://github.com/your-org" icon={<Github />} label="GitHub" />
-					<FooterIcon href="https://twitter.com/yourhandle" icon={<Twitter />} label="Twitter" />
+					<FooterIcon href="https://github.com/ashintv" icon={<Github />} label="GitHub" />
 					<FooterIcon href="mailto:contact@nexmeet.org" icon={<Mail />} label="Email" />
 					<FooterIcon href="https://nexmeet.org" icon={<Globe />} label="Website" />
 				</div>
