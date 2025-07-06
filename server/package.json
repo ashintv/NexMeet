@@ -26,6 +26,7 @@
     "jsonwebtoken": "^9.0.2",
     "livekit-server-sdk": "^2.13.1",
     "mongoose": "^8.16.1",
+    "nanoid": "^5.1.5",
     "passport": "^0.7.0",
     "passport-google-oidc": "^0.1.0",
     "zod": "^3.25.72"

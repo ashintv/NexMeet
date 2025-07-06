@@ -4,21 +4,23 @@ import { roomService } from "../config/livekit"
 import { CreateOptions, VideoGrant } from "livekit-server-sdk"
 import { RoomSchema } from "../types/room"
 import { authMiddlewares } from "../middlewares/auth"
-
+import { GenerateRoomId } from "../services/roomid"
 
 export const RoomRouter = express.Router()
 
 // create a room
 RoomRouter.post("/",authMiddlewares, async (req, res) => {
+	const roomname = GenerateRoomId()
 	const opts: CreateOptions = {
-		name: req.body.roomname, // should be randomly gernarted
+		name: roomname, // should be randomly gernarted
 		emptyTimeout: 10 * 60, // 10 minutes
 		maxParticipants: 20,
-		metadata: req.body.roomname,
+		metadata: req.body.Name,
 	}
 	try {
 		const Parse = RoomSchema.safeParse(req.body)
 		if (Parse.error) {
+			console.log(Parse.error)
 			res.status(400).json({
 				err: "ivalid format",
 			})
@@ -26,11 +28,12 @@ RoomRouter.post("/",authMiddlewares, async (req, res) => {
 		}
 		//@ts-ignore
 		console.log(req.userId)
+		
 		await GrantModel.create({
 			//@ts-ignore
 			creatorID: req.userId,
 			roomJoin: true,
-			roomname: req.body.roomname,
+			roomname: roomname,
 			Name: req.body.Roomname,
 			pctPub: req.body.pctPub,
 			pctSub: req.body.pctSub,
@@ -43,7 +46,9 @@ RoomRouter.post("/",authMiddlewares, async (req, res) => {
 	}
 	const room = await roomService.createRoom(opts)
 	res.json({
-		room,
+		sid:room.sid,
+		Name:room.metadata,
+		joinid:room.name,
 	})
 })
 

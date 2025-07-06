@@ -18,6 +18,7 @@ import { Separator } from "@/components/ui/separator"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useCreateForm } from "@/store/useCreateForm"
 import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -30,6 +31,7 @@ const FormSchema = z.object({
 })
 
 export function CreateMeetingForm() {
+	const navigate = useNavigate()
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues:{
@@ -37,20 +39,30 @@ export function CreateMeetingForm() {
 			"public":'yes',
 			"pctPub":true,
 			"pctSub":true,
+			
 	
 			
 		}
 	})
+
+	
 	async function onSubmit(values: z.infer<typeof FormSchema>) {
 		console.log(values)
 		try{
 			const response = await axios.post('http://localhost:3001/rooms',{
-				roomname:values.Name,
+				Name:values.Name,
 				pctPub:values.pctPub,
-				pctSub:values.pctSub
+				pctSub:values.pctSub,
+				roomJoin:true
 
+
+			},{
+				headers:{
+					authorization:localStorage.getItem('token')
+				}
 			})
 			console.log(response.data)
+			navigate(`/room/host/${response.data.joinid}`)
 		}catch(e:any){
 			console.error(e)
 		}

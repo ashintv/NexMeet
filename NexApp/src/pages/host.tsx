@@ -10,6 +10,8 @@ import { Room, Track } from 'livekit-client';
 import '@livekit/components-styles';
 import { useEffect, useState } from 'react';
 import axios from "axios"
+import { useUserData } from '@/store/useUser';
+import { useParams } from 'react-router-dom';
 
 const serverUrl = 'wss://meet-fstakduf.livekit.cloud';
 export  function HMeeting() {
@@ -17,14 +19,16 @@ export  function HMeeting() {
                 adaptiveStream: true,
                 dynacast: true,
         }));
+        const user = useUserData()
+        const {joinid } = useParams()
         // Connect to room
         useEffect(() => {
                 let mounted = true;
                 const connect = async () => {
                         if (mounted) {
                                 const response = await axios.post("http://localhost:3001/token/host", {
-                                        "identity": "second-host-nextjs",
-                                        "roomname": "room-nextjs"
+                                        "identity":user.email.split('@')[0],
+                                        "roomname": joinid
                                 })
                                 await room.connect(serverUrl, response.data.token);
                         }
