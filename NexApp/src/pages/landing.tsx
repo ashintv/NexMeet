@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Footer } from "@/components/ui/footer"
 import { Topbar } from "@/components/ui/topbar"
-import { Github, VideoIcon, Users, ShieldCheck, Rocket } from "lucide-react"
+import {  VideoIcon, Users, ShieldCheck, Rocket } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 export default function LandingPage() {
@@ -33,7 +33,7 @@ export default function LandingPage() {
 									className="rounded-full px-8 py-6 text-base flex gap-2"
 									onClick={() => window.open("https://github.com/ashintv/NexMeet", "_blank")}
 								>
-									<Github className="w-5 h-5" />
+									
 									View on GitHub
 								</Button>
 							</div>
