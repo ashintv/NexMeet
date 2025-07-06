@@ -9,6 +9,7 @@ import { GrantModel} from "../db"
 // token for particpants
 export const TokenRouter = express.Router()
 TokenRouter.post("/participant", async (req, res) => {
+	console.log(req.body)
 	const grant = await GrantModel.findOne({
 		roomname:req.body.roomname
 	})

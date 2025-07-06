@@ -27,7 +27,7 @@ export  function HMeeting() {
                 const connect = async () => {
                         if (mounted) {
                                 const response = await axios.post("http://localhost:3001/token/host", {
-                                        "identity":user.email.split('@')[0],
+                                        "identity":'ak_sree',
                                         "roomname": joinid
                                 })
                                 await room.connect(serverUrl, response.data.token);

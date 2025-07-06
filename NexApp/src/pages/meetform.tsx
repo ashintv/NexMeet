@@ -4,9 +4,11 @@ import { Input } from "@/components/ui/input";
 import { CreateRoom } from "./createroom";
 import { useCreateForm } from "@/store/useCreateForm";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export function Meetform() {
         const { visible , setVisible } = useCreateForm()
+        const [roomid ,  setRoomid] = useState('')
         const navigate = useNavigate()
         return (<>
                 {visible && <CreateRoom/>}
@@ -37,12 +39,14 @@ export function Meetform() {
                                         </div>
 
                                         <div className="py-3">
-                                                <Input className="w-full" placeholder="Enter Room id" />
+                                                <Input className="w-full" placeholder="Enter Room id" onChange={(e)=>{
+                                                        setRoomid(e.target.value)
+                                                }}/>
                                         </div>
                                         <div className="py-1">
                                                 <Button onClick={
                                                         ()=>{
-                                                                navigate("/room/participant")
+                                                                navigate(`/room/participant/${roomid}`)
                                                         }
                                                 } className="w-full rounded-full" variant={'secondary'}>Join Meeting</Button>
                                         </div>

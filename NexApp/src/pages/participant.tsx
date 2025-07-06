@@ -10,6 +10,8 @@ import { Room, Track } from 'livekit-client';
 import '@livekit/components-styles';
 import { useEffect, useState } from 'react';
 import axios from "axios"
+import { useParams } from 'react-router';
+
 
 const serverUrl = 'wss://meet-fstakduf.livekit.cloud';
 export function PMeeting() {
@@ -17,14 +19,18 @@ export function PMeeting() {
                 adaptiveStream: true,
                 dynacast: true,
         }));
+        let params = useParams()
+     
         // Connect to room
         useEffect(() => {
+        
                 let mounted = true;
                 const connect = async () => {
                         if (mounted) {
+                               
                                 const response = await axios.post("http://localhost:3001/token/participant", {
-                                        "identity": "second-part-1s",
-                                        "roomname": "room-test-1"
+                                        "identity": "ashi",
+                                        "roomname": params.joinid
                                 })
                                 await room.connect(serverUrl, response.data.token);
                         }

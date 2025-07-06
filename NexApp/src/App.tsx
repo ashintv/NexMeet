@@ -21,7 +21,7 @@ function App() {
          <Route path='/signup' element={<Signup/>} />
         <Route path='/join' element={<Meetform />} />
         <Route path='/room/host/:joinid' element={<HMeeting />} />
-        <Route path='/room/participant' element={<PMeeting />} />
+        <Route path='/room/participant/:joinid' element={<PMeeting />} />
         <Route path='/room/create' element={<CreateRoom />} />
         
         {/* <Route path="*" element={<NotFound />} /> */}
