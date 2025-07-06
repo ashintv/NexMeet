@@ -11,7 +11,7 @@ import '@livekit/components-styles';
 import { useEffect, useState } from 'react';
 import axios from "axios"
 import { useParams } from 'react-router';
-import { userStore, type userState } from '@/store/useuserdata';
+import { userStore } from '@/store/useuserdata';
 
 
 

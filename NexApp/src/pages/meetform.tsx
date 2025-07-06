@@ -9,6 +9,7 @@ import { useState } from "react";
 export function Meetform() {
         const { visible , setVisible } = useCreateForm()
         const [roomid ,  setRoomid] = useState('')
+        const [disable ,  setDisable] = useState(true)
         const navigate = useNavigate()
         return (<>
                 {visible && <CreateRoom/>}
@@ -41,14 +42,16 @@ export function Meetform() {
                                         <div className="py-3">
                                                 <Input className="w-full" placeholder="Enter Room id" onChange={(e)=>{
                                                         setRoomid(e.target.value)
+                                                        setDisable(false)
                                                 }}/>
                                         </div>
                                         <div className="py-1">
                                                 <Button onClick={
                                                         ()=>{
                                                                 navigate(`/room/participant/${roomid}`)
+                                                                
                                                         }
-                                                } className="w-full rounded-full" variant={'secondary'}>Join Meeting</Button>
+                                                } className="w-full rounded-full " variant={'secondary'} disabled={disable}>Join Meeting</Button>
                                         </div>
 
 
