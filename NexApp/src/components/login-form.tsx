@@ -34,7 +34,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
         name:response.data.Name,
         email:response.data.email
       })
-			
+			localStorage.setItem('token' ,  response.data.token)
 			navigate("/join")
 			setLoading(false)
 		} catch (err: any) {
