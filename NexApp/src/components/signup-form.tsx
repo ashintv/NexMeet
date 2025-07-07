@@ -120,7 +120,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"form">
 					className={`w-full `}
 					onClick={handleSubmit}
 					disabled={disableSubmit}>
-					{loading ? <ButtonLoader /> : "Sign in"}
+					{loading ? <ButtonLoader /> : "Sign up"}
 				</Button>
 				<div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
 					<span className="bg-background text-muted-foreground relative z-10 px-2">
@@ -138,7 +138,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"form">
 				</Button>
 			</div>
 			<div className="text-center text-sm">
-				Don&apos;t have an account?{" "}
+				Already have an account?{" "}
 				<a
 					onClick={() => {
 						navigate("/login")

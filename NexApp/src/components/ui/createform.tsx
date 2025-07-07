@@ -10,7 +10,6 @@ import {
 	FormField,
 	FormItem,
 	FormLabel,
-	
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Label } from "@radix-ui/react-label"
@@ -20,8 +19,8 @@ import { useCreateForm } from "@/store/useCreateForm"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { BACKEND_URL } from "@/config"
-
-
+import { useState } from "react"
+import { ButtonLoader } from "./buttonloader"
 
 const FormSchema = z.object({
 	Name: z.string().min(1, ""),
@@ -32,53 +31,58 @@ const FormSchema = z.object({
 })
 
 export function CreateMeetingForm() {
+	const [loading , setLoading]= useState(false)
 	const navigate = useNavigate()
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
-		defaultValues:{
-			"Name":"",
-			"public":'yes',
-			"pctPub":true,
-			"pctSub":true,
-			
-	
-			
-		}
+		defaultValues: {
+			Name: "",
+			public: "yes",
+			pctPub: true,
+			pctSub: true,
+		},
 	})
 
-	
 	async function onSubmit(values: z.infer<typeof FormSchema>) {
-		console.log(values)
-		try{
-			const response = await axios.post(BACKEND_URL+'/rooms',{
-				Name:values.Name,
-				pctPub:values.pctPub,
-				pctSub:values.pctSub,
-				roomJoin:true
-
-
-			},{
-				headers:{
-					authorization:localStorage.getItem('token')
+		setLoading(true)
+		try {
+			const response = await axios.post(
+				BACKEND_URL + "/rooms",
+				{
+					Name: values.Name,
+					pctPub: values.pctPub,
+					pctSub: values.pctSub,
+					roomJoin: true,
+				},
+				{
+					headers: {
+						authorization: localStorage.getItem("token"),
+					},
 				}
-			})
+			)
 			console.log(response.data)
 			navigate(`/room/host/${response.data.joinid}`)
-		}catch(e:any){
+		} catch (e: any) {
 			console.error(e)
+		}finally{
+			setLoading(false)
 		}
-		
 	}
 	const isPublic = form.watch("public")
 	const { setVisible } = useCreateForm()
 
 	return (
 		<div className="w-full font-serif  ">
-			    <div className="flex justify-end">
-                                 <Button onClick={()=>{
-					setVisible(false)
-				 }} variant={"outline"} className="hover:bg-primary">x</Button>
-                               </div>
+			<div className="flex justify-end">
+				<Button
+					onClick={() => {
+						setVisible(false)
+					}}
+					variant={"outline"}
+					className="hover:bg-primary">
+					x
+				</Button>
+			</div>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 					<FormField
@@ -106,20 +110,24 @@ export function CreateMeetingForm() {
 										onValueChange={field.onChange}
 										defaultValue={field.value}
 										className="flex">
-											
-										<Label  htmlFor="option-one" className="flex-col items-center w-1/2 rounded-md border border-primary p-5 space-x-2 ">
+										<Label
+											htmlFor="option-one"
+											className="flex-col items-center w-1/2 rounded-md border border-primary p-5 space-x-2 ">
 											<RadioGroupItem value="yes" id="option-one" />
 											Public
-											<FormDescription>Any one with join id can join your meeting </FormDescription>
+											<FormDescription>
+												Any one with join id can join your meeting{" "}
+											</FormDescription>
 										</Label>
-										<Label  htmlFor="option-two" className="flex-col items-center w-1/2 rounded-md border border-primary p-5  space-x-2">
+										<Label
+											htmlFor="option-two"
+											className="flex-col items-center w-1/2 rounded-md border border-primary p-5  space-x-2">
 											<RadioGroupItem value="no" id="option-two" />
 											Private
 											<FormDescription>Password protected</FormDescription>
 										</Label>
 									</RadioGroup>
 								</FormControl>
-								
 							</FormItem>
 						)}
 					/>
@@ -162,19 +170,18 @@ export function CreateMeetingForm() {
 													Allow Participants to Share video and audio
 												</p>
 												<p className="text-muted-foreground text-sm">
-													You can enable or disable at any
-													time during the meeting
+													You can enable or disable at any time during the
+													meeting
 												</p>
 											</div>
 										</Label>
 									</FormControl>
-                                                                        
+
 									<FormDescription></FormDescription>
 								</FormItem>
 							)}
-
 						/>
-                                                <FormField
+						<FormField
 							control={form.control}
 							name="pctPub"
 							render={({ field }) => (
@@ -192,22 +199,24 @@ export function CreateMeetingForm() {
 													Allow Participants to Share screen
 												</p>
 												<p className="text-muted-foreground text-sm">
-													You can enable or disable at any
-													time during the meeting
+													You can enable or disable at any time during the
+													meeting
 												</p>
 											</div>
 										</Label>
-
 									</FormControl>
-                                                                        
+
 									<FormDescription></FormDescription>
 								</FormItem>
 							)}
 						/>
-                                                
 					</div>
 					<div className="flex justify-end">
-						 <Button type="submit" >Create and Join</Button>
+						<Button type="submit" disabled={loading}>
+							{loading ?<div className="flex text-sm gap-2">
+								 <ButtonLoader/> Creating...
+							</div> : "Create and Join"}
+						</Button>
 					</div>
 				</form>
 			</Form>
