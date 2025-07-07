@@ -11,10 +11,10 @@ import {  Login } from './pages/login'
 import { Signup } from './pages/signup'
 
 
+
 function App() {
   return (
     <BrowserRouter>
-   
       <Routes>
         <Route path='/' element={<LandingPage />} />
         <Route path='/login' element={<Login />} />
