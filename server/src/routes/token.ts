@@ -3,13 +3,14 @@ import express from "express"
 import { createToken } from "../services/tokenService"
 import { TrackSource, VideoGrant } from "livekit-server-sdk"
 import { GrantModel} from "../db"
+import { authMiddlewares } from "../middlewares/auth"
 
 
 
 // token for particpants
 export const TokenRouter = express.Router()
-TokenRouter.post("/participant", async (req, res) => {
-	console.log(req.body)
+TokenRouter.post("/participant",authMiddlewares, async (req, res) => {
+
 	const grant = await GrantModel.findOne({
 		roomname:req.body.roomname
 	})
@@ -33,9 +34,10 @@ TokenRouter.post("/participant", async (req, res) => {
 	})
 })
 
+// co host features
 
 // token for co host (if needed)
-TokenRouter.post("/moderator", async (req, res) => {
+TokenRouter.post("/moderator",authMiddlewares, async (req, res) => {
 	const roomName = req.body.roomname
 	const identity = req.body.identity
 	const grant = {
@@ -53,9 +55,24 @@ TokenRouter.post("/moderator", async (req, res) => {
 })
 
 // token for host
-TokenRouter.post("/host", async (req, res) => {
+TokenRouter.post("/host",authMiddlewares, async (req, res) => {
+	console.log(req.body)
+	const roomAdmin =await GrantModel.findOne({
+		//@ts-ignore
+		creatorID:req.userId,
+		roomname:req.body.roomname
+	})
+	if(!roomAdmin){
+		console.log(roomAdmin)
+		res.status(400).json({
+			err:"Unautharized page"
+		})
+		return
+	}
 	const roomName = req.body.roomname
 	const identity = req.body.identity
+
+	
 	const grant: VideoGrant= {
 		roomCreate:true,
 		roomAdmin:true,

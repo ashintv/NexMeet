@@ -35,7 +35,11 @@ export function PMeeting() {
                                 const response = await axios.post(BACKEND_URL+"/token/participant", {
                                         "identity": email,
                                         "roomname": params.joinid
-                                })
+                                },{
+					headers:{
+						authorization:localStorage.getItem('token')
+					}
+				})
                                 await room.connect(serverUrl, response.data.token);
                         }
                 };

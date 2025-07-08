@@ -11,10 +11,10 @@ import "@livekit/components-styles"
 import { useEffect, useState } from "react"
 import axios from "axios"
 
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { userStore } from "@/store/useuserdata"
 import { BACKEND_URL } from "@/config"
-import { Toaster } from "sonner"
+import { Toaster, toast } from "sonner"
 import { CopyCode } from "@/components/ui/copytoaster"
 
 const serverUrl = "wss://meet-fstakduf.livekit.cloud"
@@ -28,16 +28,36 @@ export function HMeeting() {
 			})
 	)
 	const { joinid } = useParams()
+	const navigate = useNavigate()
 	// Connect to room
 	useEffect(() => {
 		let mounted = true
 		const connect = async () => {
 			if (mounted) {
-				const response = await axios.post(BACKEND_URL + "/token/host", {
-					identity: email,
-					roomname: joinid,
-				})
-				await room.connect(serverUrl, response.data.token)
+				try {
+					const response = await axios.post(
+						BACKEND_URL + "/token/host",
+						{
+							identity: email,
+							roomname: joinid,
+						},
+						{
+							headers: {
+								authorization: localStorage.getItem("token"),
+							},
+						}
+					)
+					await room.connect(serverUrl, response.data.token)
+				} catch (err: any) {
+					if (err.response && err.response.data && err.response.data.err) {
+						toast.error(err.response.data.err)
+					} else {
+						toast.error("Something went wrong")
+
+						
+					}
+					
+				}
 			}
 		}
 		connect()
@@ -61,7 +81,7 @@ export function HMeeting() {
 				</div>
 			</RoomContext.Provider>
 			<div className="fixed  bottom-5 right-5">
-				<CopyCode id={joinid?joinid:''}/>
+				<CopyCode id={joinid ? joinid : ""} />
 			</div>
 			<Toaster position={"top-center"} toastOptions={{}} />
 		</>

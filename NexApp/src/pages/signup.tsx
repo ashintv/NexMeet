@@ -3,6 +3,8 @@ import { SignupForm } from "@/components/signup-form"
 
 
 
+
+
 export function Signup() {
         return (
                 <div className="bg-background w-screen h-screen flex">
@@ -23,6 +25,8 @@ export function Signup() {
                                         </div>
                                 </div>
                         </div>
+                      
+                        
                 </div>
         )
 }
