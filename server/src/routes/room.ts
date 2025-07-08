@@ -28,7 +28,6 @@ RoomRouter.post("/",authMiddlewares, async (req, res) => {
 		}
 		//@ts-ignore
 		console.log(req.userId)
-		
 		await GrantModel.create({
 			//@ts-ignore
 			creatorID: req.userId,
@@ -56,8 +55,10 @@ RoomRouter.post("/",authMiddlewares, async (req, res) => {
 	})
 })
 
+
+// dashboard options
 //list all existing rooms
-RoomRouter.get("/", async (req, res) => {
+RoomRouter.get("/",authMiddlewares, async (req, res) => {
 	try {
 		const rooms = await roomService.listRooms()
 		res.json({ rooms })
@@ -67,8 +68,10 @@ RoomRouter.get("/", async (req, res) => {
 	}
 })
 
+
+//schedule options
 // delete a room
-RoomRouter.delete("/", async (req, res) => {
+RoomRouter.delete("/",authMiddlewares, async (req, res) => {
 	try {
 		await roomService.deleteRoom(req.body.roomname)
 		res.json({

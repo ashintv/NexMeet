@@ -5,6 +5,7 @@ import {
         RoomAudioRenderer,
         useTracks,
         RoomContext,
+     
 } from '@livekit/components-react';
 import { Room, Track } from 'livekit-client';
 import '@livekit/components-styles';
@@ -35,7 +36,11 @@ export function PMeeting() {
                                 const response = await axios.post(BACKEND_URL+"/token/participant", {
                                         "identity": email,
                                         "roomname": params.joinid
-                                })
+                                },{
+					headers:{
+						authorization:localStorage.getItem('token')
+					}
+				})
                                 await room.connect(serverUrl, response.data.token);
                         }
                 };
@@ -51,6 +56,7 @@ export function PMeeting() {
         
                 <RoomContext.Provider value={room}>
                         <div data-lk-theme="default" style={{ height: '100vh' }}>
+                              
                                 {/* Your custom component with basic video conferencing functionality. */}
                                 <MyVideoConference />
                                 {/* The RoomAudioRenderer takes care of room-wide audio for you. */}
