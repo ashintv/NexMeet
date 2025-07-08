@@ -5,13 +5,14 @@ import {
 	RoomAudioRenderer,
 	useTracks,
 	RoomContext,
+	LayoutContextProvider,
 } from "@livekit/components-react"
 import { Room, Track } from "livekit-client"
 import "@livekit/components-styles"
 import { useEffect, useState } from "react"
 import axios from "axios"
 
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { userStore } from "@/store/useuserdata"
 import { BACKEND_URL } from "@/config"
 import { Toaster, toast } from "sonner"
@@ -28,7 +29,7 @@ export function HMeeting() {
 			})
 	)
 	const { joinid } = useParams()
-	const navigate = useNavigate()
+
 	// Connect to room
 	useEffect(() => {
 		let mounted = true
@@ -53,10 +54,7 @@ export function HMeeting() {
 						toast.error(err.response.data.err)
 					} else {
 						toast.error("Something went wrong")
-
-						
 					}
-					
 				}
 			}
 		}
@@ -71,16 +69,18 @@ export function HMeeting() {
 		<>
 			<RoomContext.Provider value={room}>
 				<div data-lk-theme="default" style={{ height: "100vh" }}>
-					{/* Your custom component with basic video conferencing functionality. */}
-					<MyVideoConference />
-					{/* The RoomAudioRenderer takes care of room-wide audio for you. */}
-					<RoomAudioRenderer />
-					{/* Controls for the user to start/stop audio, video, and screen share tracks */}
+					<LayoutContextProvider data-lk-theme="default">
+						{/* Your custom component with basic video conferencing functionality. */}
+						<MyVideoConference />
+						{/* The RoomAudioRenderer takes care of room-wide audio for you. */}
+						<RoomAudioRenderer />
+						{/* Controls for the user to start/stop audio, video, and screen share tracks */}
 
-					<ControlBar />
+						<ControlBar />
+					</LayoutContextProvider>
 				</div>
 			</RoomContext.Provider>
-			<div className="fixed  bottom-5 right-5">
+			<div className="fixed flex  bottom-5 right-5">
 				<CopyCode id={joinid ? joinid : ""} />
 			</div>
 			<Toaster position={"top-center"} toastOptions={{}} />
@@ -89,8 +89,6 @@ export function HMeeting() {
 }
 
 function MyVideoConference() {
-	// `useTracks` returns all camera and screen share tracks. If a user
-	// joins without a published camera track, a placeholder track is returned.
 	const tracks = useTracks(
 		[
 			{ source: Track.Source.Camera, withPlaceholder: true },
@@ -102,9 +100,7 @@ function MyVideoConference() {
 		<GridLayout
 			tracks={tracks}
 			style={{ height: "calc(100vh - var(--lk-control-bar-height))" }}>
-			{/* The GridLayout accepts zero or one child. The child is used
-      as a template to render all passed in tracks. */}
-			<ParticipantTile />
+			<ParticipantTile className="border-2 border-primary " />
 		</GridLayout>
 	)
 }

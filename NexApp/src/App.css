@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -42,6 +43,7 @@
 }
 
 :root {
+
   --radius: 0.625rem;
   --background: #0F241C;
   --foreground: #FFF;
@@ -59,7 +61,7 @@
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
-  --input:#2E6B54;
+  --input: #2E6B54;
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -109,6 +111,7 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+
 .text-outline {
   text-shadow:
     10px 10px 0 #000,
@@ -117,10 +120,14 @@
     -1px 1px 0 #000;
 }
 
+
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
