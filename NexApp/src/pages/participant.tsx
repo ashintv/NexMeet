@@ -5,7 +5,7 @@ import {
         RoomAudioRenderer,
         useTracks,
         RoomContext,
-        Chat,
+     
 } from '@livekit/components-react';
 import { Room, Track } from 'livekit-client';
 import '@livekit/components-styles';
