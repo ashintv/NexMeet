@@ -4,7 +4,7 @@ import { ChatBubbleR, ChatBubbleS } from "./ui/chatbubble"
 import { Textarea } from "./ui/textarea"
 import { userStore } from "@/store/useuserdata"
 import { ScrollArea } from "@radix-ui/react-scroll-area"
-import { CloseIcon } from "@/icons/close"
+
 
 export function Chat(props: ChatProps) {
 	const [message, setMessage] = useState("")
