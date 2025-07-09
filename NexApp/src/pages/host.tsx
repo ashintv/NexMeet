@@ -17,9 +17,19 @@ import { userStore } from "@/store/useuserdata"
 import { BACKEND_URL } from "@/config"
 import { Toaster, toast } from "sonner"
 import { CopyCode } from "@/components/ui/copytoaster"
+import { useSocket } from "@/hooks/useChat"
+import { Chat } from "@/components/chat"
+import { useChating } from "@/hooks/useChating"
+import { useChatbox } from "@/store/useChatbox"
+import { Button } from "@/components/ui/button"
+import { ChatIcon } from "@/icons/chat"
 
 const serverUrl = "wss://meet-fstakduf.livekit.cloud"
 export function HMeeting() {
+	const { joinid } = useParams()
+	const { socket } = useSocket(joinid!)
+	const { chats } = useChating(socket!)
+	const chatbox = useChatbox()
 	const { email } = userStore.getState().user
 	const [room] = useState(
 		() =>
@@ -28,7 +38,7 @@ export function HMeeting() {
 				dynacast: true,
 			})
 	)
-	const { joinid } = useParams()
+	
 
 	// Connect to room
 	useEffect(() => {
@@ -69,7 +79,7 @@ export function HMeeting() {
 		<>
 			<RoomContext.Provider value={room}>
 				<div data-lk-theme="default" style={{ height: "100vh" }}>
-					<LayoutContextProvider data-lk-theme="default">
+					<LayoutContextProvider>
 						{/* Your custom component with basic video conferencing functionality. */}
 						<MyVideoConference />
 						{/* The RoomAudioRenderer takes care of room-wide audio for you. */}
@@ -80,10 +90,18 @@ export function HMeeting() {
 					</LayoutContextProvider>
 				</div>
 			</RoomContext.Provider>
-			<div className="fixed flex  bottom-5 right-5">
+			<div className="fixed flex gap-5 bottom-2 right-2 rounded-xl border-2 p-2 border-primary">
 				<CopyCode id={joinid ? joinid : ""} />
+				<Button variant={"ghost"} className="text-primary hover:bg-primary" onClick={()=>
+
+					chatbox.setChatbox(!chatbox.chatBox)
+				}><ChatIcon/></Button>
 			</div>
-			<Toaster position={"top-center"} toastOptions={{}} />
+
+			<Toaster position={"top-center"} />
+			{chatbox.chatBox && <div className="fixed flex  top-5 right-5">
+				<Chat chats={chats} socket={socket!}  room={joinid!}/>
+			</div>}
 		</>
 	)
 }
