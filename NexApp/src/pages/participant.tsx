@@ -14,7 +14,6 @@ import { useParams } from "react-router"
 import { userStore } from "@/store/useuserdata"
 import { BACKEND_URL } from "@/config"
 import { useSocket } from "@/hooks/useChat"
-import { useChating } from "@/hooks/useChating"
 import { Chat } from "@/components/chat"
 import { Button } from "@/components/ui/button"
 import { useChatbox } from "@/store/useChatbox"
@@ -32,8 +31,7 @@ export function PMeeting() {
 			})
 	)
 	let params = useParams()
-	const { socket } = useSocket(params.joinid!)
-	const { chats } = useChating(socket!)
+	const { socket  , chats} = useSocket(params.joinid!)
 	// Connect to room
 	useEffect(() => {
 		let mounted = true

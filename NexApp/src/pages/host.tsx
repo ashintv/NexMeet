@@ -11,7 +11,6 @@ import { Room, Track } from "livekit-client"
 import "@livekit/components-styles"
 import { useEffect, useState } from "react"
 import axios from "axios"
-
 import { useParams } from "react-router-dom"
 import { userStore } from "@/store/useuserdata"
 import { BACKEND_URL } from "@/config"
@@ -19,7 +18,6 @@ import { Toaster, toast } from "sonner"
 import { CopyCode } from "@/components/ui/copytoaster"
 import { useSocket } from "@/hooks/useChat"
 import { Chat } from "@/components/chat"
-import { useChating } from "@/hooks/useChating"
 import { useChatbox } from "@/store/useChatbox"
 import { Button } from "@/components/ui/button"
 import { ChatIcon } from "@/icons/chat"
@@ -27,8 +25,8 @@ import { ChatIcon } from "@/icons/chat"
 const serverUrl = "wss://meet-fstakduf.livekit.cloud"
 export function HMeeting() {
 	const { joinid } = useParams()
-	const { socket } = useSocket(joinid!)
-	const { chats } = useChating(socket!)
+	const { socket ,chats } = useSocket(joinid!)
+	// const { chats  } = useChating(socket! , loading)
 	const chatbox = useChatbox()
 	const { email } = userStore.getState().user
 	const [room] = useState(
@@ -38,6 +36,9 @@ export function HMeeting() {
 				dynacast: true,
 			})
 	)
+	 useEffect(() => {
+		console.log(chats)
+	}, [chats])
 	
 
 	// Connect to room

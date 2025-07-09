@@ -8,7 +8,7 @@ import { ScrollArea } from "@radix-ui/react-scroll-area"
 
 export function Chat(props: ChatProps) {
 	const [message, setMessage] = useState("")
-	const sender = userStore.getState().user.name
+	const sender = userStore.getState().user.email.split('@')[0]
 	const bottomRef = useRef<HTMLDivElement | null>(null)
 
 	useEffect(() => {
@@ -45,19 +45,19 @@ export function Chat(props: ChatProps) {
 					<ScrollArea className="overflow-y-scroll h-[400px]">
 						<div className="p-2 space-y-2">
 							{props.chats.map((x, idx) =>
-								x.sender === sender ? (
+								x.data.sender === sender ? (
 									<ChatBubbleS
 										key={idx}
-										message={x.message}
-										author={x.sender}
+										message={x.data.message}
+										author={x.data.sender}
 										timestamp={x.timestamp}
 									/>
 								) : (
 									<ChatBubbleR
 										key={idx}
-										message={x.message}
-										author={x.sender}
-										timestamp={x.timestamp}
+										message={x.data.message}
+										author={x.data.sender}
+										timestamp={x.data.timestamp}
 									/>
 								)
 							)}
