@@ -1,5 +1,6 @@
 import { userStore } from "@/store/useuserdata"
 import { useEffect, useState } from "react"
+
 // import { WS_URL } from "../app/config";
 export function useSocket(room: string) {
 	const { name } = userStore.getState().user
@@ -9,6 +10,7 @@ export function useSocket(room: string) {
 	useEffect(() => {
 		setLoading(true)
 		const ws = new WebSocket("ws://localhost:8080")
+        
 		ws.onopen = () => {
 			setLoading(false)
 			setSocket(ws)
@@ -27,6 +29,7 @@ export function useSocket(room: string) {
 					setChats((prevChats) => [...prevChats, Data])
 				}
 
+                                
 				if (Data.type == "history") {
 					//@ts-ignore
 					const parsed = Data.history.map((x) => JSON.parse(x))

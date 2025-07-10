@@ -77,7 +77,7 @@ export function HMeeting() {
 	}, [room])
 
 	return (
-		<>
+		<div className="bg-black">
 			<RoomContext.Provider value={room}>
 				<div data-lk-theme="default" style={{ height: "100vh" }}>
 					<LayoutContextProvider>
@@ -103,7 +103,7 @@ export function HMeeting() {
 			{chatbox.chatBox && <div className="fixed flex  top-5 right-5">
 				<Chat chats={chats} socket={socket!}  room={joinid!}/>
 			</div>}
-		</>
+		</div>
 	)
 }
 

@@ -8,6 +8,7 @@ import { PMeeting } from "./pages/participant"
 import { CreateRoom } from "./pages/createroom"
 import { Login } from "./pages/login"
 import { Signup } from "./pages/signup"
+import { Canvas } from "./components/canvas/canvas"
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
 				<Route path="/room/host/:joinid" element={<HMeeting />} />
 				<Route path="/room/participant/:joinid" element={<PMeeting />} />
 				<Route path="/room/create" element={<CreateRoom />} />
+        	<Route path="/canvas" element={<Canvas/>} />
 
 				{/* <Route path="*" element={<NotFound />} /> */}
 			</Routes>

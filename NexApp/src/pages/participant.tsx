@@ -60,7 +60,7 @@ export function PMeeting() {
 	}, [room])
 
 	return (
-		<>
+		<div className="bg-black">
 			<RoomContext.Provider value={room}>
 				<div data-lk-theme="default">
 					{/* Your custom component with basic video conferencing functionality. */}
@@ -81,7 +81,7 @@ export function PMeeting() {
 			{chatbox.chatBox && <div className="fixed flex  top-5 right-5">
 				<Chat chats={chats} socket={socket!} room={params.joinid!}/>
 			</div>}
-		</>
+		</div>
 	)
 }
 

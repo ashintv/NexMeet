@@ -47,11 +47,8 @@ wss.on("connection", function connection(ws, request) {
 					history:messages
 				}))
 				
-			}
-			
-			
+			}	
 		}
-
 		if (Message.type == "chat") {
 			const participants = UserMap.get(Message.data.room)
 			ChatMap.get(Message.data.room)!.push(JSON.stringify(Message))
@@ -63,8 +60,6 @@ wss.on("connection", function connection(ws, request) {
 				socket.send(JSON.stringify(Message))
 			})
 		}
-
-
 		if(Message.type == 'leave_room'){
 			UserMap.get(Message.data.room)?.delete(ws)
 			console.log(`Memeber leaved from ${Message.data.room} current Users`, UserMap)
