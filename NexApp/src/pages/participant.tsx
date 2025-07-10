@@ -18,11 +18,15 @@ import { Chat } from "@/components/chat"
 import { Button } from "@/components/ui/button"
 import { useChatbox } from "@/store/useChatbox"
 import { ChatIcon } from "@/icons/chat"
+import type { ShapeType } from "@/components/canvas/types"
+import { Canvas } from "@/components/canvas/canvas"
+import { useBoard } from "@/store/useBoard"
 
 const serverUrl = "wss://meet-fstakduf.livekit.cloud"
 export function PMeeting() {
+	const [shapes, setShape] = useState<ShapeType[]>([])
 	const { email } = userStore.getState().user
-        const chatbox = useChatbox()
+	const chatbox = useChatbox()
 	const [room] = useState(
 		() =>
 			new Room({
@@ -31,7 +35,8 @@ export function PMeeting() {
 			})
 	)
 	let params = useParams()
-	const { socket  , chats} = useSocket(params.joinid!)
+	const board = useBoard()
+	const { socket, chats } = useSocket(params.joinid!, setShape ,shapes)
 	// Connect to room
 	useEffect(() => {
 		let mounted = true
@@ -60,7 +65,10 @@ export function PMeeting() {
 	}, [room])
 
 	return (
-		<div className="bg-black">
+		<div className={`bg-black ${board.Board && "flex"}`}>
+			{board.Board && (
+				<Canvas shapes={shapes} setShape={setShape} joinid={params.joinid!} socket={socket!} />
+			)}
 			<RoomContext.Provider value={room}>
 				<div data-lk-theme="default">
 					{/* Your custom component with basic video conferencing functionality. */}
@@ -71,16 +79,19 @@ export function PMeeting() {
 					<ControlBar className="" />
 				</div>
 			</RoomContext.Provider>
-                        <div className="fixed flex gap-5 bottom-2 right-2 rounded-xl border-2 p-2 border-primary">
-	
-				<Button variant={"ghost"} className="text-primary hover:bg-primary" onClick={()=>
-
-					chatbox.setChatbox(!chatbox.chatBox)
-				}><ChatIcon/></Button>
+			<div className="fixed flex gap-5 bottom-2 right-2 rounded-xl border-2 p-2 border-primary">
+				<Button
+					variant={"ghost"}
+					className="text-primary hover:bg-primary"
+					onClick={() => chatbox.setChatbox(!chatbox.chatBox)}>
+					<ChatIcon />
+				</Button>
 			</div>
-			{chatbox.chatBox && <div className="fixed flex  top-5 right-5">
-				<Chat chats={chats} socket={socket!} room={params.joinid!}/>
-			</div>}
+			{chatbox.chatBox && (
+				<div className="fixed flex  top-5 right-5">
+					<Chat chats={chats} socket={socket!} room={params.joinid!} />
+				</div>
+			)}
 		</div>
 	)
 }
@@ -99,8 +110,6 @@ function MyVideoConference() {
 		<GridLayout
 			tracks={tracks}
 			style={{ height: "calc(100vh - var(--lk-control-bar-height))" }}>
-			{/* The GridLayout accepts zero or one child. The child is used
-      as a template to render all passed in tracks. */}
 			<ParticipantTile className="border-2 border-primary" />
 		</GridLayout>
 	)

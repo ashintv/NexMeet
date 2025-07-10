@@ -1,27 +1,42 @@
+export type ToolsType = "RECT" | "CIRCLE" | "SELECT" | "LINE" | "TEXT";
 
-export type RectType = {
-        id:string
-        x:number,
-        y:number,
-        fillColor?:string,
-        height:number,
-        width:number,
-        stroke:string
+export interface BaseShape {
+  id: string;
+  shape: ToolsType; // 👈 used as the discriminant
+  stroke: string;
+  fillColor?: string;
+  scaleX?: number; // optional
+  scaleY?: number;
 }
 
-export type CircleType= {
-        id:string,
-        stroke:string,
-        radius:number,
-        fillColor?:"string",
-        x:number,
-        y:number
-}
-export type LineTypes = {
-        id:string,
-        points: number [],
-        fillColor?:string,
-        stroke:string
+// Shape variants
+export interface RectType extends BaseShape {
+  shape: "RECT";  // 👈 discriminant
+  x: number;
+  y: number;
+  height: number;
+  width: number;
 }
 
-export type ToolsType = "RECT" | "CIRCLE" | "SELECT" | "LINE"
+export interface CircleType extends BaseShape {
+  shape: "CIRCLE"; // 👈
+  x: number;
+  y: number;
+  radius: number;
+}
+
+export interface LineType extends BaseShape {
+  shape: "LINE";   // 👈
+  points: number[];
+}
+
+export interface TextType extends BaseShape {
+  shape: "TEXT";   // 👈
+  x: number;
+  y: number;
+  text: string;
+  fontSize: number;
+}
+
+// ✅ One single discriminated union
+export type ShapeType = RectType | CircleType | LineType | TextType;

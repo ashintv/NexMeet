@@ -5,7 +5,6 @@ import {
 	RoomAudioRenderer,
 	useTracks,
 	RoomContext,
-	LayoutContextProvider,
 } from "@livekit/components-react"
 import { Room, Track } from "livekit-client"
 import "@livekit/components-styles"
@@ -21,13 +20,18 @@ import { Chat } from "@/components/chat"
 import { useChatbox } from "@/store/useChatbox"
 import { Button } from "@/components/ui/button"
 import { ChatIcon } from "@/icons/chat"
+import { Canvas } from "@/components/canvas/canvas"
+import type { ShapeType } from "@/components/canvas/types"
+import { useBoard } from "@/store/useBoard"
 
 const serverUrl = "wss://meet-fstakduf.livekit.cloud"
 export function HMeeting() {
+	const [shapes, setShape] = useState<ShapeType[]>([])
 	const { joinid } = useParams()
-	const { socket ,chats } = useSocket(joinid!)
+	const { socket, chats } = useSocket(joinid!, setShape, shapes)
 	// const { chats  } = useChating(socket! , loading)
 	const chatbox = useChatbox()
+	const board = useBoard()
 	const { email } = userStore.getState().user
 	const [room] = useState(
 		() =>
@@ -36,10 +40,9 @@ export function HMeeting() {
 				dynacast: true,
 			})
 	)
-	 useEffect(() => {
+	useEffect(() => {
 		console.log(chats)
 	}, [chats])
-	
 
 	// Connect to room
 	useEffect(() => {
@@ -77,32 +80,56 @@ export function HMeeting() {
 	}, [room])
 
 	return (
-		<div className="bg-black">
-			<RoomContext.Provider value={room}>
-				<div data-lk-theme="default" style={{ height: "100vh" }}>
-					<LayoutContextProvider>
-						{/* Your custom component with basic video conferencing functionality. */}
-						<MyVideoConference />
-						{/* The RoomAudioRenderer takes care of room-wide audio for you. */}
-						<RoomAudioRenderer />
-						{/* Controls for the user to start/stop audio, video, and screen share tracks */}
+		<div className={`bg-black ${board.Board && "flex"}`}>
+			{board.Board && (
+				<Canvas shapes={shapes} setShape={setShape} joinid={joinid!} socket={socket!} />
+			)}
 
-						<ControlBar />
-					</LayoutContextProvider>
+			<RoomContext.Provider value={room}>
+				<div data-lk-theme="default">
+					{/* Your custom component with basic video conferencing functionality. */}
+					<MyVideoConference />
+					{/* The RoomAudioRenderer takes care of room-wide audio for you. */}
+					<RoomAudioRenderer />
+					{/* Controls for the user to start/stop audio, video, and screen share tracks */}
+
+					<ControlBar />
 				</div>
 			</RoomContext.Provider>
-			<div className="fixed flex gap-5 bottom-2 right-2 rounded-xl border-2 p-2 border-primary">
-				<CopyCode id={joinid ? joinid : ""} />
-				<Button variant={"ghost"} className="text-primary hover:bg-primary" onClick={()=>
 
-					chatbox.setChatbox(!chatbox.chatBox)
-				}><ChatIcon/></Button>
+			<div
+				className={`fixed flex  gap-1 rounded-xl  border-2 p-1 border-primary ${
+					board.Board ? "flex-col-reverse  right-2 bottom-2" : "bottom-2 right-2 "
+				}`}>
+				<CopyCode id={joinid ? joinid : ""} />
+				<Button
+					variant={"ghost"}
+					className="text-primary hover:bg-primary"
+					onClick={() => chatbox.setChatbox(!chatbox.chatBox)}>
+					<ChatIcon />
+				</Button>
+				<Button
+					onClick={() => {
+						socket?.send(
+							JSON.stringify({
+								type: "board",
+								data: {
+									room: joinid,
+									open:!board.Board
+								},
+							})
+						)
+					}}>
+					B
+				</Button>
 			</div>
 
 			<Toaster position={"top-center"} />
-			{chatbox.chatBox && <div className="fixed flex  top-5 right-5">
-				<Chat chats={chats} socket={socket!}  room={joinid!}/>
-			</div>}
+			{chatbox.chatBox && (
+				<div className="fixed flex  top-5 right-5">
+					<Chat chats={chats} socket={socket!} room={joinid!} />
+				</div>
+			)}
 		</div>
 	)
 }
