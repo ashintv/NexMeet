@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import type { ShapeType, ToolsType } from "./types"
+import type {  ToolsType } from "./types"
 
 interface useToolsState {
 	tool: ToolsType

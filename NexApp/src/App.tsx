@@ -8,7 +8,7 @@ import { PMeeting } from "./pages/participant"
 import { CreateRoom } from "./pages/createroom"
 import { Login } from "./pages/login"
 import { Signup } from "./pages/signup"
-import { Canvas } from "./components/canvas/canvas"
+
 
 
 function App() {

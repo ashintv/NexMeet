@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import {useRef, useState } from "react"
 import { Rect, Stage, Layer, Circle, Line, Transformer, Text } from "react-konva"
 import {
 	type TextType,

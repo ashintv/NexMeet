@@ -12,9 +12,7 @@ type userStoreState = {
 type userStoreActions = {
 	setUser: (user: userStoreState["user"]) => void
 }
-
 export type userState = userStoreState & userStoreActions
-
 export const userStore = createStore<userState>()(
 	persist(
 		(set) => ({
