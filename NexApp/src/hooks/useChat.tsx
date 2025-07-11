@@ -48,6 +48,9 @@ export function useSocket(
 				if (Data.type == "board") {
 					board.setBoard(Data.data.open)
 				}
+				if (Data.type == "board_history"){
+					board.setBoard(Data.shapes)
+				}
 				
 				if (Data.type == "shape") {
 					console.log(Data.shape.id)

@@ -1,4 +1,4 @@
-import {useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Rect, Stage, Layer, Circle, Line, Transformer, Text } from "react-konva"
 import {
 	type TextType,
@@ -17,6 +17,9 @@ export function Canvas({shapes , setShape , socket ,joinid}:CanvasProps) {
 	const { tool } = useTools()
 
 	//elemenst
+        useEffect(()=>{
+                console.log(shapes)
+        } , [shapes])
 	const [editingId, setEditingId] = useState<string | null>(null)
 	const [editingValue, setEditingValue] = useState<string>("")
 	const [inputPos, setInputPos] = useState<{ x: number; y: number; fontSize: number }>({
@@ -210,7 +213,7 @@ export function Canvas({shapes , setShape , socket ,joinid}:CanvasProps) {
 		)
 	}
 	return (
-		<div className="outline w-fit ">
+		<div className="outline w-fit">
 			<Stage
 				listening
 				ref={stageRef}

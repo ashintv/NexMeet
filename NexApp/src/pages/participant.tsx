@@ -70,7 +70,7 @@ export function PMeeting() {
 				<Canvas shapes={shapes} setShape={setShape} joinid={params.joinid!} socket={socket!} />
 			)}
 			<RoomContext.Provider value={room}>
-				<div data-lk-theme="default">
+				<div data-lk-theme="default" className={`${board.Board && "scale-90 w-full"}`} >
 					{/* Your custom component with basic video conferencing functionality. */}
 					<MyVideoConference />
 					{/* The RoomAudioRenderer takes care of room-wide audio for you. */}

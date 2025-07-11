@@ -85,15 +85,18 @@ export function HMeeting() {
 				<Canvas shapes={shapes} setShape={setShape} joinid={joinid!} socket={socket!} />
 			)}
 
-			<RoomContext.Provider value={room}>
-				<div data-lk-theme="default">
+			<RoomContext.Provider value={room} >
+				<div data-lk-theme="default" className={`${board.Board && "scale-90 w-full"}`} >
 					{/* Your custom component with basic video conferencing functionality. */}
 					<MyVideoConference />
 					{/* The RoomAudioRenderer takes care of room-wide audio for you. */}
 					<RoomAudioRenderer />
 					{/* Controls for the user to start/stop audio, video, and screen share tracks */}
 
-					<ControlBar />
+					
+						<ControlBar className="w-full" />
+				
+						
 				</div>
 			</RoomContext.Provider>
 
@@ -146,7 +149,7 @@ function MyVideoConference() {
 		<GridLayout
 			tracks={tracks}
 			style={{ height: "calc(100vh - var(--lk-control-bar-height))" }}>
-			<ParticipantTile className="border-2 border-primary " />
+			<ParticipantTile className="border-2 border-primary" />
 		</GridLayout>
 	)
 }
