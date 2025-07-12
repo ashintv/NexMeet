@@ -5,6 +5,7 @@ const wss = new WebSocketServer({ port: 8080 })
 
 const UserMap = new Map<string, Set<WebSocket>>()
 const ChatMap = new Map<string, string[]>()
+const BoardMap =  new Map<string , string[]>()
 
 wss.on("connection", function connection(ws, request) {
 	// console.log("user initaited connection")
@@ -30,7 +31,6 @@ wss.on("connection", function connection(ws, request) {
 		const Message = JSON.parse(data.toString())
 		if (Message.type == "join_room") {
 			if (!UserMap.get(Message.data.room)) {
-				
 				UserMap.set(Message.data.room, new Set())
 				console.log(`No Room exist for ${Message.data.room} created`, UserMap)
 			}
@@ -38,16 +38,29 @@ wss.on("connection", function connection(ws, request) {
 			if (!ChatMap.get(Message.data.room)) {
 				ChatMap.set(Message.data.room, [])
 				console.log(`No Chat hitory exist for ${Message.data.room} created`, ChatMap)
-				
 			} else {
-				const messages =  ChatMap.get(Message.data.room)
+				const messages = ChatMap.get(Message.data.room)
 				console.log(`Sending history of ${Message.data.room}`)
-				ws.send(JSON.stringify({
-					type :'history',
-					history:messages
-				}))
-				
-			}	
+				ws.send(
+					JSON.stringify({
+						type: "history",
+						history: messages,
+					})
+				)
+			}if (!BoardMap.get(Message.data.room)) {
+				BoardMap.set(Message.data.room, [])
+				console.log(`No Chat hitory exist for ${Message.data.room} created`, BoardMap)
+			} else {
+				const shapes = BoardMap.get(Message.data.room)
+				console.log(`Sending history of ${Message.data.room}`)
+				ws.send(
+					JSON.stringify({
+						type: "history_shapes",
+						shapes
+					})
+				)
+			}
+
 		}
 		if (Message.type == "chat") {
 			const participants = UserMap.get(Message.data.room)
@@ -60,25 +73,46 @@ wss.on("connection", function connection(ws, request) {
 				socket.send(JSON.stringify(Message))
 			})
 		}
-		if(Message.type == 'leave_room'){
+		if (Message.type == "leave_room") {
 			UserMap.get(Message.data.room)?.delete(ws)
 			console.log(`Memeber leaved from ${Message.data.room} current Users`, UserMap)
 			// if everyone leaves
-			if (UserMap.get(Message.data.room)?.size==0){
-				
-				console.log( `room ${Message.data.room} becomes empty clearing it from Map`, UserMap)
-				console.log( "clearing its chat history", ChatMap)
-
+			if (UserMap.get(Message.data.room)?.size == 0) {
+				console.log(`room ${Message.data.room} becomes empty clearing it from Map`, UserMap)
+				console.log("clearing its chat history", ChatMap)
+				console.log("clearing board history")
 
 				UserMap.delete(Message.data.room)
 				ChatMap.delete(Message.data.room)
+				BoardMap.delete(Message.data.room)
 
-				console.log(`Cleared ${Message.data.room} current Map is :`,UserMap)
-				console.log( `Cleared Chats of ${Message.data.room} current Chats `, ChatMap)
-
-
+				console.log(`Cleared ${Message.data.room} current Map is :`, UserMap)
+				console.log(`Cleared Chats of ${Message.data.room} current Chats `, ChatMap)
 			}
 		}
+		if (Message.type == "board") {
+			const participants = UserMap.get(Message.data.room)
+			BoardMap.get(Message.data.room)!.push(JSON.stringify(Message))
+			if (!participants) {
+				console.log("no participant")
+				return
+			}
+			participants.forEach((socket) => {
+				socket.send(JSON.stringify(Message))
+			})
+		}
+		if (Message.type == "shape") {
+			const participants = UserMap.get(Message.data.room)
+			if (!participants) {
+				console.log("no participant")
+				return
+			}
 
+			participants.forEach((socket) => {
+				if (socket !== ws) {
+					socket.send(JSON.stringify(Message))
+				}
+			})
+		}
 	})
 })
