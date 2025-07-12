@@ -1,7 +1,16 @@
+import https from "https"
+import fs from "fs";
+import express from "express";
 import WebSocket, { WebSocketServer } from "ws"
 import jwt from "jsonwebtoken"
 import { JWT_SECRET } from "./config"
-const wss = new WebSocketServer({ port: 8080 })
+
+const app = express()
+const server = https.createServer({
+	key: fs.readFileSync("./certs/key.pem"),
+	cert: fs.readFileSync("./certs/cert.pem"),
+}, app);
+const wss = new WebSocketServer({ server });
 
 const UserMap = new Map<string, Set<WebSocket>>()
 const ChatMap = new Map<string, string[]>()
@@ -115,4 +124,8 @@ wss.on("connection", function connection(ws, request) {
 			})
 		}
 	})
+})
+
+server.listen(443, () => {
+	console.log("WebSocket server is running on port 443")
 })
