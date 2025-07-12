@@ -1,4 +1,5 @@
 import type { ShapeType } from "@/components/canvas/types"
+import { WSS_URL } from "@/config"
 import { useBoard } from "@/store/useBoard"
 import { userStore } from "@/store/useuserdata"
 import { useEffect, useState } from "react"
@@ -16,13 +17,14 @@ export function useSocket(
 	const [chats, setChats] = useState<any[]>([])
 	useEffect(() => {
 		setLoading(true)
-		const ws = new WebSocket("ws://localhost:8080")
+		const ws = new WebSocket(WSS_URL);
 		ws.onopen = () => {
 			setLoading(false)
 			setSocket(ws)
 			const data = JSON.stringify({
 				type: "join_room",
 				data: {
+
 					sender: name,
 					room: room,
 				},

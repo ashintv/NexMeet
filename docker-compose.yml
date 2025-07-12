@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo
+    volume:
+      -dbdata:/data.db
+    
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      ports:
+        "3000:3000"
+      depends_on:
+        - mongo
+      
+  websocket:
+    build:
+      context: ./Websocket-server
+      dockerfile: Dockerfile
+      ports:
+        "8080:8080"
+
+  frontend:
+    build:
+      context: ./NexApp
+      dockerfile: Dockerfile
+      ports:
+        "5173:5173"
+      depends_on:
+        - backend
+        - websocket
+
+  volumes:
+    dbdata:
