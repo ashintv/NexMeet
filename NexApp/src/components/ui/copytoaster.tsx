@@ -9,8 +9,8 @@ export function CopyCode({ id }: { id: string }) {
 
 	return (
 		<div>
-			<Button
-				onClick={() => {
+			<Button variant={"ghost"} className="text-primary hover:bg-primary"
+ 				onClick={() => {
 					toast("Copy your Meetig id", {
 						unstyled: true,
                                                 action:<CopyFromTextbox id={id}/> , 
