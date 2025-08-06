@@ -3,9 +3,9 @@
 # 🚀 NEXMEET  
 **Transforming Connections Into Limitless Possibilities**  
 
-![Last Commit](https://img.shields.io/github/last-commit/ashintv/NexMeet)
-![Top Language](https://img.shields.io/github/languages/top/ashintv/NexMeet)
-![Languages Count](https://img.shields.io/github/languages/count/ashintv/NexMeet)
+![Last Commit](https://img.shields.io/github/last-commit/ashintv/NexMeet?style=for-the-badge)
+![Top Language](https://img.shields.io/github/languages/top/ashintv/NexMeet?style=for-the-badge)
+![Languages Count](https://img.shields.io/github/languages/count/ashintv/NexMeet?style=for-the-badge)
 
 ---
 
@@ -27,40 +27,72 @@
 
 ---
 
+</div>
+
 ## 📌 Overview
-NexMeet is a **real-time video conferencing & collaboration platform** with:
-- 🧩 Modular architecture  
-- 🌐 WebSocket-powered instant communication  
-- 🎥 LiveKit-based video calls  
-- 🐳 Dockerized setup  
-- ⚙️ Modern TypeScript + Vite + Tailwind stack  
+**NexMeet** is a **real-time video conferencing & collaboration platform** designed for speed, scalability, and simplicity.  
+It features **WebSocket-powered communication**, **LiveKit video calls**, **Dockerized deployment**, and a **modern frontend stack**.
+
+---
+
+## 💡 Features
+- 🧩 **Modular Architecture** — Reusable components & well-structured code.  
+- 🌐 **Real-Time Communication** — WebSocket-based instant chat, drawing, and updates.  
+- 🎥 **Video Conferencing** — Powered by [LiveKit](https://livekit.io/) for HD video/audio.  
+- 🐳 **Dockerized Setup** — Run anywhere, quickly.  
+- ⚙️ **Modern Tooling** — TypeScript, Vite, Tailwind, ESLint.
 
 ---
 
 ## 📥 Installation
 
+
+# 1️⃣ Clone repository
 ```bash
-# Clone repository
 git clone https://github.com/ashintv/NexMeet
 cd NexMeet
-
-# Backend (Express Server)
+```
+# 2️⃣ Backend (Express Server)
+```bash
 cd server
+```
+```bash
 npm install
-npm run dev        # Development
-# OR
-npm run build && npm run start   # Production
+```
+# Development
+```bash
+npm run dev        
+```
+# Production
+```bash
+npm run build && npm run start   
+```
 
-# WebSocket Server
+# 3️⃣ WebSocket Server
+```bash
 cd ../Websocket-server
+```
+```bash
 npm install
-npm run dev        # Development
-# OR
-npm run build && npm run start   # Production
-
-# Frontend (React + Vite)
-cd ../NexApp
-npm install
+```
+```bash
 npm run dev
+```
 
-# Access frontend at http://localhost:5173
+# OR
+```bash
+npm run build && npm run start
+```
+
+
+# 4️⃣ Frontend (React + Vite)
+```bash
+cd ../NexApp
+```
+```bash
+npm install
+```
+```bash
+npm run dev
+```
+ # Access at http://localhost:5173
